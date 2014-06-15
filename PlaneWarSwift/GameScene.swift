@@ -9,8 +9,6 @@
 import SpriteKit
 import Foundation
 
-
-
 let ENEMIES_MAX_COUNT    = 100
 let BULLET_RATE          = 15
 
@@ -18,21 +16,10 @@ let ENEMY_MIDDIUM_RATE   = 10
 let ENEMY_LARGE_RATE     = 21
 
 class GameScene: SKScene {
-    var player  = SKSpriteNode(imageNamed:"plane")
+    var player  = PlayerSprite() //SKSpriteNode(imageNamed:"plane")
     override func didMoveToView(view: SKView) {
-        /* Setup your scene here */
-        
-        let myLabel = SKLabelNode(fontNamed:"Chalkduster")
-        myLabel.text = "";
-        myLabel.fontSize = 65;
-        myLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame));
-        player.position = myLabel.position
-        player.xScale = 0.3
-        player.yScale = 0.3
-        self.addChild(player)
-        self.addChild(myLabel)
+        self.setUpPlayer();
         self.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
-
     }
     override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
         let touch =  touches.anyObject() as UITouch
@@ -41,9 +28,16 @@ class GameScene: SKScene {
             (abs(location.y-player.position.y)<=50)){
             player.position = location
         }
-        
     }
-    
+    override func update(currentTime:CFTimeInterval) {
+        self.setUpOneBullet()
+    }
+    func setUpPlayer() {
+        player = PlayerSprite.newPlayerAtPostion(CGPointMake(CGRectGetMidX(self.frame),50))
+        player.zPosition = 10.0
+        player.setScale(0.5)
+        self.addChild(player)
+    }
     var bullet_setup_count = 0
     func setUpOneBullet() {
         if (bullet_setup_count >= BULLET_RATE) {
