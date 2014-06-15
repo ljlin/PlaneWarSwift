@@ -17,9 +17,16 @@ let ENEMY_LARGE_RATE     = 21
 
 class GameScene: SKScene {
     var player  = PlayerSprite() //SKSpriteNode(imageNamed:"plane")
+    let background = SKSpriteNode(imageNamed:"bg")
     override func didMoveToView(view: SKView) {
+        
         self.setUpPlayer();
-        self.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
+        
+        background.setScale(0.8);
+        background.anchorPoint = CGPointMake(0.5,0.5)
+        background.position = CGPointMake(self.size.width / 2 , self.size.height / 2)
+        self.addChild(background)
+    
     }
     override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
         let touch =  touches.anyObject() as UITouch

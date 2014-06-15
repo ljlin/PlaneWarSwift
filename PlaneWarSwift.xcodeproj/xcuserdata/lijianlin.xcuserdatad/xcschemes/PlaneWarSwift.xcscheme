@@ -28,16 +28,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "BF204EC019433F1700288C00"
-               BuildableName = "PlaneWarSwiftTests.xctest"
-               BlueprintName = "PlaneWarSwiftTests"
-               ReferencedContainer = "container:PlaneWarSwift.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
