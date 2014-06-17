@@ -9,6 +9,7 @@
 import SpriteKit
 import Foundation
 
+
 let ENEMIES_MAX_COUNT    = 100
 let BULLET_RATE          = 15
 
@@ -16,8 +17,12 @@ let ENEMY_MIDDIUM_RATE   = 10
 let ENEMY_LARGE_RATE     = 21
 
 class GameScene: SKScene {
-    var player  = PlayerSprite() //SKSpriteNode(imageNamed:"plane")
+    var player  = PlayerSprite()
     let background = SKSpriteNode(imageNamed:"bg")
+    var score  = 0
+    let scoreLabel = SKLabelNode()
+    var enemiesArray = Optional<EnemySprite>[]()
+
     override func didMoveToView(view: SKView) {
         
         self.setUpPlayer();
@@ -60,5 +65,35 @@ class GameScene: SKScene {
         var time = Double(fabs(Double(dest.y) - Double(position.y))) / Double(bullet.speed)
         var action = SKAction.moveTo(dest,duration:time)
         bullet.runAction(action,completion:{bullet.removeFromParent()})
+    }
+    func availabelSprite() -> EnemySprite? {
+        let rand_count = random() % enemiesArray.count
+        var sprite :EnemySprite? = enemiesArray[rand_count]
+        
+        if let msprite = sprite {
+            if(msprite.parent != self){
+                msprite.removeAllActions()
+                return msprite
+            }
+        }
+        return nil
+    }
+    func addEnemies() {
+        if let sprite = self.availabelSprite(){
+        if (random() % 77 == 0) {
+            let x :Float = Float(random() % 1000) * 0.1
+            //let x = random() % 1000 * ((CGRectGetMaxX(self.frame) - sprite.size.width ) / 1000) + sprite.size.width / 2;
+            let position = CGPointMake(x, CGRectGetMaxY(self.frame) + sprite.size.height);
+            player.position = position
+            let dest = CGPointMake(x, -sprite.size.height);
+            self.addChild(sprite)
+            let time = Double(fabs(Double(dest.y) - Double(position.y))) / Double(sprite.speed);
+            let action = SKAction.moveTo(dest,duration:time)
+            sprite.runAction(action,completion:{
+                sprite.removeFromParent()
+                sprite.blood = sprite.maxBlood
+                })
+            }
+        }
     }
 }

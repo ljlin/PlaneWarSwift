@@ -6,5 +6,7 @@
 //  Copyright (c) 2014年 ljlin. All rights reserved.
 //
 
+#import "PlaneSprite.h"
 #import "BulletSprite.h"
 #import "PlayerSprite.h"
+#import "EnemySprite.h"
