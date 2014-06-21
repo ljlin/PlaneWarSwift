@@ -16,7 +16,7 @@ let BULLET_RATE          = 15
 let ENEMY_MIDDIUM_RATE   = 10
 let ENEMY_LARGE_RATE     = 21
 
-class GameScene: SKScene {
+class GameScene: SKScene,SKPhysicsContactDelegate {
     var player  = PlayerSprite()
     let background = SKSpriteNode(imageNamed:"bg")
     var score  = 0
@@ -26,9 +26,11 @@ class GameScene: SKScene {
     override func didMoveToView(view: SKView) {
         self.setUpPlayer()
         self.setUpEnemies()
+        self.physicsWorld.contactDelegate = self
         background.setScale(0.5)
         background.anchorPoint = CGPointMake(0.5,0.5)
         background.position = CGPointMake(self.size.width / 2 , self.size.height / 2)
+        
         self.addChild(background)
     }
     override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
@@ -37,7 +39,6 @@ class GameScene: SKScene {
         if ((abs(location.x-player.position.x)<=50) &&
             (abs(location.y-player.position.y)<=50)){
             player.position = location
-            println(location.x,location.y)
         }
     }
     override func update(currentTime:CFTimeInterval) {
@@ -99,7 +100,6 @@ class GameScene: SKScene {
             if (random() % 50 == 0) {
                 let x = (CGFloat(random()) % 1000) / 1000 * CGFloat(self.size.width)
                 //CGFloat(random() % 1000) * CGFloat(((CGRectGetMaxX(self.frame) - sprite.size.width ) / 1000) + sprite.size.width / 2)
-                println("x is \(x)")
                 let position = CGPointMake(x, CGRectGetMaxY(self.frame) + sprite.size.height)
                 sprite.position = position
                 let dest = CGPointMake(x, -sprite.size.height)
@@ -111,6 +111,34 @@ class GameScene: SKScene {
                     sprite.blood = sprite.maxBlood
                     })
                 }
+        }
+    }
+    func didBeginContact(contact: SKPhysicsContact!){
+        if ((contact.bodyA.node is PlayerSprite == true) ||
+            (contact.bodyB.node is PlayerSprite == true)){
+                println("self.restart()")
+        } else {
+            var sprite : EnemySprite! = nil
+            var bullet : BulletSprite! = nil
+            if contact.bodyA.node is EnemySprite {
+                sprite = contact.bodyA.node as EnemySprite
+                bullet = contact.bodyB.node as BulletSprite
+            } else {
+                sprite = contact.bodyB.node as EnemySprite
+                bullet = contact.bodyA.node as BulletSprite
+            }
+            
+            sprite.blood = sprite.blood - bullet.power
+            
+            if (sprite.blood <= 0) {
+                sprite.removeFromParent()
+                sprite.removeAllActions()
+                sprite.blood = sprite.maxBlood
+                self.score += Int(sprite.score())
+            }
+            
+            bullet.removeFromParent()
+            bullet.removeAllActions()
         }
     }
 }
