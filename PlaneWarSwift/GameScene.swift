@@ -9,9 +9,8 @@
 import SpriteKit
 import Foundation
 
-
 let ENEMIES_MAX_COUNT    = 100
-let BULLET_RATE          = 15
+let BULLET_RATE          = 10
 
 let ENEMY_MIDDIUM_RATE   = 10
 let ENEMY_LARGE_RATE     = 21
@@ -22,7 +21,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
     var score  = 0
     let scoreLabel = SKLabelNode()
     var enemiesArray = Optional<EnemySprite>[]()
-
+    var bullet_setup_count = 0
     override func didMoveToView(view: SKView) {
         self.setUpPlayer()
         self.setUpEnemies()
@@ -48,6 +47,14 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
     func restart(){
         score = 0;
         self.updateScore()
+        for sprite in enemiesArray{
+            if sprite {
+                sprite!.removeFromParent()
+                sprite!.removeAllActions()
+                sprite!.blood = sprite!.maxBlood
+            }
+        }
+        //self.removeChildrenInArray
         self.setUpEnemies()
     }
 
@@ -65,7 +72,6 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         player.setScale(0.4)
         self.addChild(player)
     }
-    var bullet_setup_count = 0
     func setUpOneBullet() {
         if (bullet_setup_count >= BULLET_RATE) {
             bullet_setup_count = 0
@@ -76,7 +82,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         var position = player.position
         var bullet = BulletSprite.newBulletWithType(BulletTypeNormal,position:position)
         self.addChild(bullet)
-        var dest  = CGPointMake(position.x, position.y + CGRectGetHeight(self.frame) / 2.0)
+        var dest  = CGPointMake(position.x, CGRectGetHeight(self.frame))
         var time = Double(fabs(Double(dest.y) - Double(position.y))) / Double(bullet.speed)
         var action = SKAction.moveTo(dest,duration:time)
         bullet.runAction(action,completion:{bullet.removeFromParent()})
@@ -96,9 +102,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
             }
         }
     }
-    func updateScore() {
-        scoreLabel.text = "\(score)"
-    }
+    func updateScore() {scoreLabel.text = "\(score)"}
     func availabelSprite() -> EnemySprite? {
         let rand_count = random() % enemiesArray.count
         var sprite :EnemySprite? = enemiesArray[rand_count]
@@ -132,9 +136,9 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
     func didBeginContact(contact: SKPhysicsContact!){
         if ((contact.bodyA.node is PlayerSprite == true) ||
             (contact.bodyB.node is PlayerSprite == true)){
-                println("self.restart()")
+                self.restart()
         } else {
-            var sprite : EnemySprite! = nil
+            var sprite : EnemySprite!  = nil
             var bullet : BulletSprite! = nil
             if contact.bodyA.node is EnemySprite {
                 sprite = contact.bodyA.node as EnemySprite
@@ -143,9 +147,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
                 sprite = contact.bodyB.node as EnemySprite
                 bullet = contact.bodyA.node as BulletSprite
             }
-            
             sprite.blood = sprite.blood - bullet.power
-            
             if (sprite.blood <= 0) {
                 sprite.removeFromParent()
                 sprite.removeAllActions()
@@ -153,7 +155,6 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
                 self.score += Int(sprite.score())
                 self.updateScore()
             }
-            
             bullet.removeFromParent()
             bullet.removeAllActions()
         }
