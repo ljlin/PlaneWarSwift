@@ -30,8 +30,8 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         background.setScale(0.5)
         background.anchorPoint = CGPointMake(0.5,0.5)
         background.position = CGPointMake(self.size.width / 2 , self.size.height / 2)
-        
         self.addChild(background)
+        self.addScoreLabel()
     }
     override func touchesMoved(touches: NSSet, withEvent event: UIEvent) {
         let touch =  touches.anyObject() as UITouch
@@ -44,6 +44,20 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
     override func update(currentTime:CFTimeInterval) {
         self.setUpOneBullet()
         self.addEnemies()
+    }
+    func restart(){
+        score = 0;
+        self.updateScore()
+        self.setUpEnemies()
+    }
+
+    func addScoreLabel() {
+        scoreLabel.fontColor = SKColor.blackColor()
+        scoreLabel.text = "0"
+        scoreLabel.fontSize = 20
+        scoreLabel.position = CGPointMake(CGRectGetMidX(self.frame),CGRectGetMaxY(self.frame) - 45)
+        scoreLabel.zPosition = 10
+        self.addChild(scoreLabel)
     }
     func setUpPlayer() {
         player = PlayerSprite.newPlayerAtPostion(CGPointMake(CGRectGetMidX(self.frame),50))
@@ -82,7 +96,9 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
             }
         }
     }
-
+    func updateScore() {
+        scoreLabel.text = "\(score)"
+    }
     func availabelSprite() -> EnemySprite? {
         let rand_count = random() % enemiesArray.count
         var sprite :EnemySprite? = enemiesArray[rand_count]
@@ -135,6 +151,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
                 sprite.removeAllActions()
                 sprite.blood = sprite.maxBlood
                 self.score += Int(sprite.score())
+                self.updateScore()
             }
             
             bullet.removeFromParent()
