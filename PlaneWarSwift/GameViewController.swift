@@ -13,13 +13,12 @@ extension SKNode {
     class func unarchiveFromFile(file : NSString) -> SKNode? {
         
         let path = NSBundle.mainBundle().pathForResource(file, ofType: "sks")
-        
-        var sceneData = NSData.dataWithContentsOfFile(path, options: .DataReadingMappedIfSafe, error: nil)
-        var archiver = NSKeyedUnarchiver(forReadingWithData: sceneData)
+        var sceneData = NSData(contentsOfFile: path!, options: .DataReadingMappedIfSafe, error: nil)
+        var archiver = NSKeyedUnarchiver(forReadingWithData: sceneData!)
         
         archiver.setClass(self.classForKeyedUnarchiver(), forClassName: "SKScene")
         let scene = archiver.decodeObjectForKey(NSKeyedArchiveRootObjectKey) as GameScene
-        archiver.finishDecoding()
+       archiver.finishDecoding()
         return scene
     }
 }
@@ -29,25 +28,30 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
-            // Configure the view.
-            let skView = self.view as SKView
-            skView.showsFPS = true
-            skView.showsNodeCount = true
-            skView.frame = UIScreen.mainScreen().bounds
-            
-            /* Sprite Kit applies additional optimizations to improve rendering performance */
-            skView.ignoresSiblingOrder = true
-            
-            /* Set the scale mode to scale to fit the window */
-            scene.scaleMode = .AspectFit
+        let scene = GameScene(size:UIScreen.mainScreen().bounds.size)
+        
+        //GameScene(fileNamed: "GameScene")
+        // if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
+        // Configure the view.
+        
+        let skView = SKView(frame: self.view.frame)
+        self.view.addSubview(skView)
+        skView.showsFPS = true
+        skView.showsNodeCount = true
+        skView.frame = UIScreen.mainScreen().bounds
+        
+        /* Sprite Kit applies additional optimizations to improve rendering performance */
+        skView.ignoresSiblingOrder = true
+        
+        /* Set the scale mode to scale to fit the window */
+        scene.scaleMode = .AspectFit
 
-            let ScreenWidth  = UIScreen.mainScreen().bounds.width
-            let ScreenHeight = UIScreen.mainScreen().bounds.height
-            scene.size = CGSizeMake(ScreenWidth,ScreenHeight)
+        let ScreenWidth  = UIScreen.mainScreen().bounds.width
+        let ScreenHeight = UIScreen.mainScreen().bounds.height
+        scene.size = CGSizeMake(ScreenWidth,ScreenHeight)
 
-            skView.presentScene(scene)
-        }
+        skView.presentScene(scene)
+
     }
 
     override func shouldAutorotate() -> Bool {
@@ -56,9 +60,9 @@ class GameViewController: UIViewController {
 
     override func supportedInterfaceOrientations() -> Int {
         if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
-            return Int(UIInterfaceOrientationMask.AllButUpsideDown.toRaw())
+            return Int(UIInterfaceOrientationMask.AllButUpsideDown.rawValue)
         } else {
-            return Int(UIInterfaceOrientationMask.All.toRaw())
+            return Int(UIInterfaceOrientationMask.All.rawValue)
         }
     }
 

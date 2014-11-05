@@ -20,7 +20,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
     let background = SKSpriteNode(imageNamed:"bg")
     var score  = 0
     let scoreLabel = SKLabelNode()
-    var enemiesArray = Optional<EnemySprite>[]()
+    var enemiesArray = [Optional<EnemySprite>]()
     var bullet_setup_count = 0
     override func didMoveToView(view: SKView) {
         self.setUpPlayer()
@@ -48,7 +48,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         score = 0;
         self.updateScore()
         for sprite in enemiesArray{
-            if sprite {
+            if (sprite != nil) {
                 sprite!.removeFromParent()
                 sprite!.removeAllActions()
                 sprite!.blood = sprite!.maxBlood
@@ -88,7 +88,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         bullet.runAction(action,completion:{bullet.removeFromParent()})
     }
     func setUpEnemies() {
-        for i in 0..ENEMIES_MAX_COUNT {
+        for i in 0..<ENEMIES_MAX_COUNT {
             var sprite : EnemySprite?
             if (i % ENEMY_LARGE_RATE == 0) {
                 sprite = EnemySprite.newEnemyWithEnemyType(EnemyTypeLarge)
@@ -98,7 +98,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
                 sprite = EnemySprite.newEnemyWithEnemyType(EnemyTypeSmall)
             }
             if (sprite?.parent != self) {
-                enemiesArray += sprite
+                enemiesArray.append(sprite);
             }
         }
     }

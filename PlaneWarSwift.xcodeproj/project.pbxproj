@@ -17,6 +17,8 @@
 		BF89B6EB194D466B00194B97 /* PlaneSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = BF89B6DF194D466B00194B97 /* PlaneSprite.m */; };
 		BF89B6EC194D466B00194B97 /* PlayerSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = BF89B6E1194D466B00194B97 /* PlayerSprite.m */; };
 		BFAAF626194E087700B94274 /* Easy-Cal.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFAAF625194E087700B94274 /* Easy-Cal.swift */; };
+		BFE7645919D6AF4E00CC47D2 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = BFE7645819D6AF4E00CC47D2 /* GameScene.sks */; };
+		BFE7645B19D6B23900CC47D2 /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BFE7645A19D6B23900CC47D2 /* Storyboard.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +39,8 @@
 		BF89B6E0194D466B00194B97 /* PlayerSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerSprite.h; sourceTree = "<group>"; };
 		BF89B6E1194D466B00194B97 /* PlayerSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerSprite.m; sourceTree = "<group>"; };
 		BFAAF625194E087700B94274 /* Easy-Cal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Easy-Cal.swift"; path = "../Easy-Cal.swift"; sourceTree = "<group>"; };
+		BFE7645819D6AF4E00CC47D2 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
+		BFE7645A19D6B23900CC47D2 /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Storyboard.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +76,8 @@
 				BF89B6D0194D466B00194B97 /* AppDelegate.swift */,
 				BF89B6D4194D466B00194B97 /* GameScene.swift */,
 				BF89B6D5194D466B00194B97 /* GameViewController.swift */,
+				BFE7645A19D6B23900CC47D2 /* Storyboard.storyboard */,
+				BFE7645819D6AF4E00CC47D2 /* GameScene.sks */,
 				BFAAF625194E087700B94274 /* Easy-Cal.swift */,
 				BF89B6D6194D466B00194B97 /* Images.xcassets */,
 				BF89B6D7194D466B00194B97 /* Info.plist */,
@@ -155,6 +161,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF89B6E7194D466B00194B97 /* Images.xcassets in Resources */,
+				BFE7645B19D6B23900CC47D2 /* Storyboard.storyboard in Resources */,
+				BFE7645919D6AF4E00CC47D2 /* GameScene.sks in Resources */,
 				BF89B6E8194D466B00194B97 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
